@@ -17,6 +17,14 @@
 .hero-copy{text-align:center}.hero .pill{justify-content:center}.hero h1{font-size:clamp(39px,11.5vw,49px);letter-spacing:-1.8px}.hero .intro{margin-left:auto;margin-right:auto}.hero .primary{margin-left:auto;margin-right:auto}.hero-art{margin-left:auto;margin-right:auto}
 .mood,.reminders,.breathing{text-align:center}.chapter{justify-content:center}.chapter:before{content:'';height:1px;flex:1;background:var(--line);opacity:.65}.eyebrow{justify-content:center}.breathing .eyebrow:before{display:none}.section-lead{margin-left:auto;margin-right:auto}.mood-options{justify-content:center}.mood-answer p{margin-left:auto;margin-right:auto}.note h3{margin-left:auto;margin-right:auto}.note .symbol{text-align:center}
 }
+
+[hidden]{display:none!important}
+@media(max-width:640px){
+.hero-copy,.hero-art,.mood,.reminders,.breathing,.closing,.footer{text-align:center}
+.hero .intro,.section-lead,.mood-answer p,.note h3{margin-left:auto;margin-right:auto}
+.mood-options,.eyebrow{justify-content:center}
+.hero .pill{justify-content:center}.hug-dialog{text-align:center}
+}
 </style>
 </head>
 <body>
@@ -34,21 +42,60 @@
 <section class="section closing reveal" aria-labelledby="closing-title"><svg class="flower" viewBox="0 0 100 100" aria-hidden="true"><g fill="#dcc8eb"><ellipse cx="50" cy="28" rx="14" ry="23"/><ellipse cx="50" cy="28" rx="14" ry="23" transform="rotate(72 50 50)"/><ellipse cx="50" cy="28" rx="14" ry="23" transform="rotate(144 50 50)"/><ellipse cx="50" cy="28" rx="14" ry="23" transform="rotate(216 50 50)"/><ellipse cx="50" cy="28" rx="14" ry="23" transform="rotate(288 50 50)"/></g><circle cx="50" cy="50" r="12" fill="#ebc985"/></svg><div class="eyebrow">04 / і ще одне</div><h2 id="closing-title">Не все одразу<br><em>У своєму темпі</em></h2><p>Нехай сьогодні знайдеться місце для чогось доброго Чашки чаю Улюбленої пісні Розмови з тим, хто розуміє</p><div class="quote-box" id="quote" aria-live="polite" aria-atomic="true">«Нехай сьогодні буде<br>трохи ніжніше до тебе»</div><button class="primary" id="more">Ще трішки підтримки <span class="arrow" aria-hidden="true">✧</span></button></section>
 </main>
 <footer class="footer"><span>крок за кроком день за днем</span>Зроблено з теплом, щоб ти усміхнулась ♡</footer>
-<dialog class="hug-dialog" id="hug-dialog" aria-label="Обійми для тебе"><button class="hug-close" id="hug-close" aria-label="Закрити обійми">×</button><span class="little-label">особлива доставка обіймів</span><img id="hug-gif" class="hug-gif" src="/hug-love.gif" alt="Стіч ніжно обіймає Ліло на пляжі" width="498" height="268"><p class="hug-caption"></p></dialog>
+<dialog class="hug-dialog" id="hug-dialog" aria-label="Обійми для тебе"><button class="hug-close" id="hug-close" aria-label="Закрити обійми">×</button><span class="little-label">особлива доставка обіймів</span><img id="hug-gif" class="hug-gif" src="./assets/hug-love.gif" alt="Теплі обійми для тебе"><p id="hug-error" hidden>Не вдалося завантажити GIF — перевір файл assets/hug-love.gif</p><p class="hug-caption">ось такі обійми ♡</p></dialog>
 <script>
 (()=>{
 'use strict';
 const $=s=>document.querySelector(s);
 const reduceMotion=matchMedia('(prefers-reduced-motion: reduce)');
-const messages={tired:['Тобі можна відпочити','Не обов’язково дотискати цей день до останньої краплі сил Вода, щось смачне, трохи тиші — почни з того, що зараз під силу Решта може зачекати'],anxious:['Не потрібно вирішувати все зараз','Відчуй опору під ногами Подивись навколо й знайди щось приємне для очей Можна зосередитись на одній маленькій дії, а решту поки відкласти'],warmth:['Тримай трохи тепла','Уяви, що хтось приніс тобі чай, вкрив пледом і сказав: «Можеш просто посидіти поруч Не потрібно нічого пояснювати» Ця хвилинка — для тебе']};
+const messages={tired:['Тобі можна відпочити','Не обов’язково дотискати цей день до останньої краплі сил Вода, щось смачне, трохи тиші — почни з того, що зараз під силу Решта може зачекати'],anxious:['Не потрібно вирішувати все зараз','Відчуй опору під ногами Подивись навколо й знайди щось приємне для очей Можна зосередитись на одній маленькій дії, а решту поки відкласти'],warmth:['Тримай трохи тепла','Тримай трохи тепла й обіймів Нехай усе, що зараз крутиться в голові, на хвилинку зачекає А ти влаштуйся зручніше — тобі можна просто відпочити ♡']};
 document.querySelectorAll('[data-mood]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-mood]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));const [heading,body]=messages[button.dataset.mood];$('#mood-heading').textContent=heading;$('#mood-text').textContent=body;}));
 const hugDialog=$('#hug-dialog');
 $('#hug').addEventListener('click',()=>{hugDialog.showModal();document.body.classList.add('hug-open');});
 $('#hug-close').addEventListener('click',()=>hugDialog.close());
 hugDialog.addEventListener('click',event=>{if(event.target===hugDialog){const r=hugDialog.getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)hugDialog.close();}});
 hugDialog.addEventListener('close',()=>document.body.classList.remove('hug-open'));
-$('#hug-gif').addEventListener('error',()=>{const fallback=document.querySelector('.heart-gif');$('#hug-gif').src=fallback.src;$('#hug-gif').classList.add('hug-fallback');$('#hug-gif').alt='Анімоване сердечко — обійми для тебе';},{once:true});
-const quotes=["Ти заслуговуєш на ту саму доброту, яку даруєш іншим", "Ти маєш право передумати, сповільнитися й почати знову", "Один важкий день не перекреслює всього, що ти вже пройшла", "Сьогодні можна зробити менше й подбати про себе більше", "Не все потрібно тримати на своїх плечах — можна попросити підтримки", "Нехай наступний крок буде маленьким, але твоїм", "Не потрібно порівнювати свій темп із чужим", "Ти можеш сумніватися в собі й усе одно рухатись уперед", "Тобі можна відпочивати ще до того, як закінчаться сили", "Нехай сьогодні знайдеться привід усміхнутися — хоча б зовсім маленький", "Ти вже пройшла чимало — дай собі трохи визнання за це", "Навіть у найзаплутанішому дні можна знайти одну просту радість", "Не обов’язково бути сильною щохвилини", "Можна почати день заново навіть посеред дня", "Пауза не скасовує твого шляху", "Твої почуття не мають бути зручними для всіх", "Для відпочинку не потрібен особливий дозвіл", "Нехай у твоєму дні буде щось просто для задоволення", "Можна обрати себе навіть у дрібницях", "Не кожна думка, що лякає, обов’язково справдиться", "Ти можеш не знати, що далі — зараз достатньо цього маленького кроку", "Сподіваюся, сьогодні ти почуєш щось добре й повіриш у це", "Хай твій чай буде теплим, а вечір — спокійним", "Нехай сьогодні буде трохи ніжніше до тебе"];let quoteIndex=0;
+function showGifError(){const gif=$('#hug-gif');gif.hidden=true;$('#hug-error').hidden=false;}
+$('#hug-gif').addEventListener('error',showGifError,{once:true});
+if($('#hug-gif').complete&&$('#hug-gif').naturalWidth===0)showGifError();
+const quotes=[
+  "Ти заслуговуєш на ту саму доброту, яку даруєш іншим",
+  "Ти маєш право передумати, сповільнитися й почати знову",
+  "Один важкий день не перекреслює всього, що ти вже пройшла",
+  "Сьогодні можна зробити менше й подбати про себе більше",
+  "Не все потрібно тримати на своїх плечах — можна попросити підтримки",
+  "Нехай наступний крок буде маленьким, але твоїм",
+  "Не потрібно порівнювати свій темп із чужим",
+  "Ти можеш сумніватися в собі й усе одно рухатись уперед",
+  "Тобі можна відпочивати ще до того, як закінчаться сили",
+  "Нехай сьогодні знайдеться привід усміхнутися — хоча б зовсім маленький",
+  "Ти вже пройшла чимало — дай собі трохи визнання за це",
+  "Навіть у найзаплутанішому дні можна знайти одну просту радість",
+  "Не обов’язково бути сильною щохвилини",
+  "Можна почати день заново навіть посеред дня",
+  "Пауза не скасовує твого шляху",
+  "Твої почуття не мають бути зручними для всіх",
+  "Для відпочинку не потрібен особливий дозвіл",
+  "Нехай у твоєму дні буде щось просто для задоволення",
+  "Можна обрати себе навіть у дрібницях",
+  "Не кожна думка, що лякає, обов’язково справдиться",
+  "Ти можеш не знати, що далі — зараз достатньо цього маленького кроку",
+  "Сподіваюся, сьогодні ти почуєш щось добре й повіриш у це",
+  "Хай твій чай буде теплим, а вечір — спокійним",
+  "Нехай сьогодні буде трохи ніжніше до тебе",
+  "Не потрібно знати всі відповіді, щоб зробити щось добре для себе",
+  "Тобі можна радіти дрібницям, навіть коли велике ще не вирішилось",
+  "У твоєму дні може бути місце просто для приємного",
+  "Хай сьогодні знайдеться хтось, із ким можна бути собою",
+  "Ти можеш бути на своєму боці навіть тоді, коли помиляєшся",
+  "Не кожен день має бути особливим — інколи добре, коли він просто спокійний",
+  "Те, що зараз складно, не означає, що ти робиш щось не так",
+  "Нехай поруч буде більше людей, із якими легко дихати",
+  "Тобі не потрібно пояснювати кожну свою паузу",
+  "Спробуй сьогодні сказати собі щось добре — своїми словами",
+  "Можна залишити трохи сил для того, що любиш",
+  "Нехай цей вечір принесе тобі щось тепле й просте"
+];let quoteIndex=0;
 $('#more').addEventListener('click',()=>{$('#quote').textContent='«'+quotes[quoteIndex]+'»';quoteIndex=(quoteIndex+1)%quotes.length;});
 let breathing=false,breathTimer,startTime;
 function stopBreathing(){breathing=false;clearInterval(breathTimer);$('#breath-area').classList.remove('breath-running');$('#breath-toggle').setAttribute('aria-pressed','false');$('#breath-toggle').setAttribute('aria-label','Почати дихальну паузу');$('#breath-instruction').textContent='натисни на коло, щоб почати';$('#breath-label').textContent='Тиць';$('#breath-status').textContent='Паузу завершено';}
